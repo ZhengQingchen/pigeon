@@ -155,8 +155,7 @@ defimpl Pigeon.Configurable, for: Pigeon.APNS.JWTConfig do
     end
   end
 
-  @spec push_headers(JWTConfig.t(), Notification.t(), Keyword.t()) ::
-          Shared.headers()
+  @spec push_headers(JWTConfig.t(), Notification.t(), Keyword.t()) :: Shared.headers()
   def push_headers(config, notification, opts) do
     config
     |> Shared.push_headers(notification, opts)
@@ -207,25 +206,25 @@ defimpl Pigeon.Configurable, for: Pigeon.APNS.JWTConfig do
   end
 
   @spec generate_apns_jwt(JWTConfig.t(), String.t()) :: String.t()
-  defp generate_apns_jwt(config, token_storage_key) do
-    import Joken
+  defp generate_apns_jwt(_config, _token_storage_key) do
+    # import Joken
 
-    key = get_token_key(config)
+    # key = get_token_key(config)
 
-    now = :os.system_time(:seconds)
+    # now = :os.system_time(:seconds)
 
-    token =
-      token()
-      |> with_claims(%{"iss" => config.team_id, "iat" => now})
-      |> with_header_arg("alg", "ES256")
-      |> with_header_arg("typ", "JWT")
-      |> with_header_arg("kid", config.key_identifier)
-      |> sign(es256(key))
-      |> get_compact
+    # token =
+    #   token()
+    #   |> with_claims(%{"iss" => config.team_id, "iat" => now})
+    #   |> with_header_arg("alg", "ES256")
+    #   |> with_header_arg("typ", "JWT")
+    #   |> with_header_arg("kid", config.key_identifier)
+    #   |> sign(es256(key))
+    #   |> get_compact
 
-    :ok = Pigeon.APNS.Token.update(token_storage_key, {now, token})
+    # :ok = Pigeon.APNS.Token.update(token_storage_key, {now, token})
 
-    token
+    ""
   end
 
   @spec get_token_key(JWTConfig.t()) :: JOSE.JWK.t()
